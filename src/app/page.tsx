@@ -21,6 +21,12 @@ export default function Home() {
           </div>
 
           <a
+            href="https://syntra-core.vercel.app/workflow-assessment"
+            className="rounded-full border border-fuchsia-300/40 px-5 py-2 text-sm font-semibold text-fuchsia-200 transition hover:border-fuchsia-300 hover:bg-fuchsia-300/10"
+          >
+            Workflow Assessment
+          </a>
+          <a
             href="#early-access"
             className="rounded-full border border-cyan-300/40 px-5 py-2 text-sm font-semibold text-cyan-100 transition hover:border-cyan-300 hover:bg-cyan-300/10"
           >
@@ -50,11 +56,17 @@ export default function Home() {
               >
                 Request Early Access
               </a>
+<a
+            href="#how-it-works"
+            className="rounded-full border border-white/15 px-7 py-3 text-center text-sm font-bold text-white transition hover:bg-white/10"
+          >
+            See How It Works
+          </a>
               <a
-                href="#how-it-works"
-                className="rounded-full border border-white/15 px-7 py-3 text-center text-sm font-bold text-white transition hover:bg-white/10"
+                href="https://syntra-core.vercel.app/workflow-assessment"
+                className="rounded-full border border-fuchsia-300/40 px-7 py-3 text-center text-sm font-bold text-fuchsia-200 transition hover:bg-fuchsia-300/10"
               >
-                See How It Works
+                Try the Workflow Assessment
               </a>
             </div>
           </div>
@@ -87,6 +99,59 @@ export default function Home() {
                 </p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-6 py-20">
+        <div className="mx-auto max-w-7xl">
+          <p className="text-sm font-bold uppercase tracking-[0.25em] text-fuchsia-300">
+            Free tool
+          </p>
+          <h2 className="mt-4 max-w-4xl text-4xl font-black tracking-tight md:text-5xl">
+            Discover where your business is losing time
+          </h2>
+          <p className="mt-5 max-w-2xl text-lg text-slate-300">
+            Use Syntra's Workflow Assessment to identify bottlenecks, estimate wasted hours, and see which AI workers could help your business.
+          </p>
+
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
+            <div className="rounded-3xl border border-fuchsia-300/20 bg-fuchsia-300/[0.05] p-6">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-fuchsia-300/20">
+                <svg className="h-6 w-6 text-fuchsia-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-black text-white">Identify repeated workflow bottlenecks</h3>
+              <p className="mt-3 text-sm leading-6 text-slate-300">Map your recurring processes and find where delays happen most.</p>
+            </div>
+            <div className="rounded-3xl border border-fuchsia-300/20 bg-fuchsia-300/[0.05] p-6">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-fuchsia-300/20">
+                <svg className="h-6 w-6 text-fuchsia-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-black text-white">Estimate time and cost lost each month</h3>
+              <p className="mt-3 text-sm leading-6 text-slate-300">Get concrete numbers on how much inefficiency is costing your business.</p>
+            </div>
+            <div className="rounded-3xl border border-fuchsia-300/20 bg-fuchsia-300/[0.05] p-6">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-fuchsia-300/20">
+                <svg className="h-6 w-6 text-fuchsia-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-black text-white">Recommend the right Syntra AI workers</h3>
+              <p className="mt-3 text-sm leading-6 text-slate-300">See which AI workers best fit your specific workflow needs.</p>
+            </div>
+          </div>
+
+          <div className="mt-10">
+            <a
+              href="https://syntra-core.vercel.app/workflow-assessment"
+              className="inline-block rounded-full bg-fuchsia-300 px-7 py-3 text-center text-sm font-black text-slate-950 shadow-lg shadow-fuchsia-500/20 transition hover:bg-fuchsia-200"
+            >
+              Start Workflow Assessment
+            </a>
           </div>
         </div>
       </section>
