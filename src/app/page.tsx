@@ -51,22 +51,22 @@ export default function Home() {
 
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
               <a
+                href="https://syntra-core.vercel.app/workflow-assessment"
+                className="rounded-full border border-fuchsia-300/40 px-7 py-3 text-center text-sm font-bold text-fuchsia-200 transition hover:bg-fuchsia-300/10"
+              >
+                Try the Workflow Assessment
+              </a>
+              <a
                 href="#early-access"
                 className="rounded-full bg-cyan-300 px-7 py-3 text-center text-sm font-black text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:bg-cyan-200"
               >
                 Request Early Access
               </a>
-<a
-            href="#how-it-works"
-            className="rounded-full border border-white/15 px-7 py-3 text-center text-sm font-bold text-white transition hover:bg-white/10"
-          >
-            See How It Works
-          </a>
               <a
-                href="https://syntra-core.vercel.app/workflow-assessment"
-                className="rounded-full border border-fuchsia-300/40 px-7 py-3 text-center text-sm font-bold text-fuchsia-200 transition hover:bg-fuchsia-300/10"
+                href="#how-it-works"
+                className="rounded-full border border-white/15 px-7 py-3 text-center text-sm font-bold text-white transition hover:bg-white/10"
               >
-                Try the Workflow Assessment
+                See How It Works
               </a>
             </div>
           </div>
