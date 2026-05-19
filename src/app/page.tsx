@@ -20,18 +20,20 @@ export default function Home() {
             </span>
           </div>
 
-          <a
-            href="https://syntra-core.vercel.app/workflow-assessment"
-            className="rounded-full border border-fuchsia-300/40 px-5 py-2 text-sm font-semibold text-fuchsia-200 transition hover:border-fuchsia-300 hover:bg-fuchsia-300/10"
-          >
-            Workflow Assessment
-          </a>
-          <a
-            href="#early-access"
-            className="rounded-full border border-cyan-300/40 px-5 py-2 text-sm font-semibold text-cyan-100 transition hover:border-cyan-300 hover:bg-cyan-300/10"
-          >
-            Request Early Access
-          </a>
+          <div className="flex items-center gap-3">
+            <a
+              href="https://syntra-core.vercel.app/workflow-assessment"
+              className="rounded-full border border-fuchsia-300/40 px-5 py-2 text-sm font-semibold text-fuchsia-200 transition hover:border-fuchsia-300 hover:bg-fuchsia-300/10"
+            >
+              Workflow Assessment
+            </a>
+            <a
+              href="#early-access"
+              className="rounded-full border border-cyan-300/40 px-5 py-2 text-sm font-semibold text-cyan-100 transition hover:border-cyan-300 hover:bg-cyan-300/10"
+            >
+              Request Early Access
+            </a>
+          </div>
         </nav>
 
         <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-12 py-24 lg:grid-cols-2">
