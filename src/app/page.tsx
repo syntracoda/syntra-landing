@@ -25,7 +25,7 @@ export default function Home() {
               href="https://syntra-core.vercel.app/workflow-assessment"
               className="rounded-full border border-fuchsia-300/40 px-5 py-2 text-sm font-semibold text-fuchsia-200 transition hover:border-fuchsia-300 hover:bg-fuchsia-300/10"
             >
-              Workflow Assessment
+              AI Workflow Analysis
             </a>
             <a
               href="#early-access"
@@ -56,7 +56,7 @@ export default function Home() {
                 href="https://syntra-core.vercel.app/workflow-assessment"
                 className="rounded-full border border-fuchsia-300/40 px-7 py-3 text-center text-sm font-bold text-fuchsia-200 transition hover:bg-fuchsia-300/10"
               >
-                Try the Workflow Assessment
+                Try the AI Workflow Analysis
               </a>
               <a
                 href="#early-access"
@@ -114,7 +114,7 @@ export default function Home() {
             Discover where your business is losing time
           </h2>
           <p className="mt-5 max-w-2xl text-lg text-slate-300">
-            Use Syntra's Workflow Assessment to identify bottlenecks, estimate wasted hours, and see which AI workers could help your business.
+            AI Workflow Analysis helps identify where your business is losing time, missing follow-ups, and repeating admin work — then recommends which Syntra workers can help.
           </p>
 
           <div className="mt-10 grid gap-6 md:grid-cols-3">
@@ -152,7 +152,7 @@ export default function Home() {
               href="https://syntra-core.vercel.app/workflow-assessment"
               className="inline-block rounded-full bg-fuchsia-300 px-7 py-3 text-center text-sm font-black text-slate-950 shadow-lg shadow-fuchsia-500/20 transition hover:bg-fuchsia-200"
             >
-              Start Workflow Assessment
+              Start AI Workflow Analysis
             </a>
           </div>
         </div>
