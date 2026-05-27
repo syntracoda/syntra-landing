@@ -18,15 +18,24 @@ export default function FounderIntroPage() {
             Workforce OS for small businesses.
           </p>
 
-          <div className="mt-10 overflow-hidden rounded-2xl border border-white/10 bg-black/60">
-            <video
-              controls
-              playsInline
-              className="w-full"
+          <div className="mt-10 rounded-2xl border border-white/10 bg-white/[0.04] p-8 text-center md:p-12">
+            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-fuchsia-300/20">
+              <svg className="h-8 w-8 text-fuchsia-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <a
+              href="https://drive.google.com/file/d/1CZCM4TDzUwHYizQDrnsOcjWBcJOlcrf7/view"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block rounded-full bg-fuchsia-300 px-8 py-4 text-base font-black text-slate-950 shadow-lg shadow-fuchsia-500/20 transition hover:bg-fuchsia-200"
             >
-              <source src="/videos/founder-intro.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
+              Watch Founder Intro Video
+            </a>
+            <p className="mt-4 text-sm text-slate-400">
+              Video opens in a new tab
+            </p>
           </div>
         </div>
       </section>
