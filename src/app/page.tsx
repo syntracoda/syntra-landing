@@ -1,312 +1,363 @@
+import Image from 'next/image';
+
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#050816] text-white">
-      <section className="relative overflow-hidden px-6 py-8">
-        <div className="absolute -right-24 top-0 h-96 w-96 rounded-full bg-cyan-500/20 blur-3xl" />
-        <div className="absolute -left-24 bottom-0 h-96 w-96 rounded-full bg-fuchsia-500/20 blur-3xl" />
-
-        <nav className="relative z-10 mx-auto flex max-w-7xl items-center justify-between">
+    <main className="bg-gray-50 text-gray-900 font-sans">
+      {/* Hero with navigation */}
+      <header className="relative overflow-hidden">
+        {/* Top navigation bar */}
+        <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6">
+          {/* Logo and brand name */}
           <div className="flex items-center gap-3">
-            <div className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-2xl border border-cyan-300/20 bg-black/40 shadow-lg shadow-cyan-500/20">
-              <img
-                src="/images/syntra-logo.png"
-                alt="Syntra Suite"
-                className="h-full w-full object-cover"
-              />
+            <div className="h-10 w-10 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow">
+              <Image src="/images/syntra-logo.png" alt="Syntra Suite" width={40} height={40} />
             </div>
-
-            <span className="text-lg font-semibold tracking-wide text-white">
-              Syntra Suite
-            </span>
+            <span className="text-lg font-bold tracking-tight">Syntra Suite</span>
           </div>
-
-          <div className="flex items-center gap-3">
-            <a
-              href="https://syntra-core.vercel.app/workflow-assessment"
-              className="rounded-full border border-fuchsia-300/40 px-5 py-2 text-sm font-semibold text-fuchsia-200 transition hover:border-fuchsia-300 hover:bg-fuchsia-300/10"
-            >
-              AI Workflow Analysis
-            </a>
-            <a
-              href="#early-access"
-              className="rounded-full border border-cyan-300/40 px-5 py-2 text-sm font-semibold text-cyan-100 transition hover:border-cyan-300 hover:bg-cyan-300/10"
-            >
-              Request Early Access
-            </a>
+          {/* Primary nav links */}
+          <div className="hidden items-center gap-6 text-sm font-semibold text-gray-600 md:flex">
+            <a href="#product" className="hover:text-gray-900">Product</a>
+            <a href="#use-cases" className="hover:text-gray-900">Use Cases</a>
+            <a href="#demo" className="hover:text-gray-900">Demo</a>
+            <a href="#founder" className="hover:text-gray-900">Founder</a>
+            <span className="cursor-default text-gray-400">Pricing (Soon)</span>
           </div>
+          {/* Call to action button */}
+          <a
+            href="#early-access"
+            className="rounded-full bg-purple-600 px-5 py-2 text-sm font-semibold text-white shadow-md transition hover:bg-purple-500"
+          >
+            Request Pilot Access
+          </a>
         </nav>
-
-        <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-12 py-24 lg:grid-cols-2">
-          <div>
-            <div className="mb-5 inline-flex rounded-full border border-cyan-300/30 bg-cyan-300/10 px-4 py-2 text-sm font-semibold text-cyan-200">
+        {/* Hero content */}
+        <section className="mx-auto max-w-7xl grid items-center gap-12 px-6 pb-24 pt-12 lg:grid-cols-12">
+          {/* Text content */}
+          <div className="lg:col-span-6">
+            <span className="mb-4 inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700 uppercase">
               AI Workforce OS • Executive Assistant first
-            </div>
-
-            <h1 className="max-w-3xl text-5xl font-black tracking-tight text-white md:text-7xl">
-              Deploy AI workers that understand your business.
+            </span>
+            <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
+              AI workers for the work your business never has time to finish.
             </h1>
-
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-              Syntra helps teams turn email, calendars, tasks, and workflows
-              into prioritized action — with human approval built in.
+            <p className="mt-6 max-w-xl text-lg leading-7 text-gray-600">
+              Syntra gives small businesses specialized AI workers for email, scheduling, follow‑ups, workflow triage, and client operations —
+              with human approval before anything important happens.
             </p>
-
+            {/* Key benefits list */}
+            <ul className="mt-8 space-y-3 text-gray-700">
+              <li className="flex items-start gap-3">
+                <svg className="h-6 w-6 flex-shrink-0 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span className="leading-6">Detects work across your tools</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <svg className="h-6 w-6 flex-shrink-0 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span className="leading-6">Prepares drafts you can approve</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <svg className="h-6 w-6 flex-shrink-0 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span className="leading-6">Human approval — you stay in control</span>
+              </li>
+            </ul>
+            {/* Hero call to actions */}
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
               <a
-                href="https://syntra-core.vercel.app/workflow-assessment"
-                className="rounded-full border border-fuchsia-300/40 px-7 py-3 text-center text-sm font-bold text-fuchsia-200 transition hover:bg-fuchsia-300/10"
-              >
-                Try the AI Workflow Analysis
-              </a>
-              <a
                 href="#early-access"
-                className="rounded-full bg-cyan-300 px-7 py-3 text-center text-sm font-black text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:bg-cyan-200"
+                className="rounded-full bg-purple-600 px-7 py-3 text-center text-sm font-bold text-white shadow-md transition hover:bg-purple-500"
               >
-                Request Early Access
+                Request Pilot Access
               </a>
               <a
-                href="#how-it-works"
-                className="rounded-full border border-white/15 px-7 py-3 text-center text-sm font-bold text-white transition hover:bg-white/10"
+                href="#demo"
+                className="rounded-full border border-purple-600 px-7 py-3 text-center text-sm font-bold text-purple-600 transition hover:bg-purple-50"
               >
-                See How It Works
+                Watch Product Demo
+              </a>
+              <a
+                href="#founder"
+                className="rounded-full border border-gray-300 px-7 py-3 text-center text-sm font-semibold text-gray-700 transition hover:bg-gray-100"
+              >
+                View Founder Intro
               </a>
             </div>
           </div>
-
-          <div className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-6 shadow-2xl shadow-cyan-950/40 backdrop-blur">
-            <div className="rounded-[1.5rem] bg-[#0b1024] p-6">
-              <p className="text-sm font-semibold text-cyan-200">
-                Today’s AI Briefing
-              </p>
-
-              <div className="mt-6 space-y-4">
-                {[
-                  "3 urgent emails need review",
-                  "2 meetings have missing prep notes",
-                  "1 calendar conflict needs approval",
-                  "5 recommended actions ready",
-                ].map((item) => (
-                  <div
-                    key={item}
-                    className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-slate-200"
-                  >
-                    {item}
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-6 rounded-2xl border border-fuchsia-300/30 bg-fuchsia-300/10 p-4">
-                <p className="text-sm font-bold text-fuchsia-200">
-                  Syntra recommends. You approve. Then Syntra executes.
-                </p>
-              </div>
+          {/* Product screenshot */}
+          <div className="lg:col-span-6 flex justify-center lg:justify-end">
+            <div className="w-full max-w-md overflow-hidden rounded-xl shadow-xl ring-1 ring-gray-200">
+              <Image
+                src="/images/syntra-app.png"
+                alt="Syntra app screenshot"
+                width={512}
+                height={512}
+                className="w-full h-auto"
+              />
             </div>
           </div>
-        </div>
-      </section>
-
-      <section className="px-6 py-20">
-        <div className="mx-auto max-w-7xl">
-          <p className="text-sm font-bold uppercase tracking-[0.25em] text-fuchsia-300">
-            Free tool
+        </section>
+      </header>
+      {/* Trusted by section */}
+      <section id="use-cases" className="py-12">
+        <div className="mx-auto max-w-7xl px-6">
+          <p className="text-center text-sm font-bold uppercase tracking-[0.25em] text-purple-600">
+            Trusted by small businesses ready to scale
           </p>
-          <h2 className="mt-4 max-w-4xl text-4xl font-black tracking-tight md:text-5xl">
-            Discover where your business is losing time
-          </h2>
-          <p className="mt-5 max-w-2xl text-lg text-slate-300">
-            AI Workflow Analysis helps identify where your business is losing time, missing follow-ups, and repeating admin work — then recommends which Syntra workers can help.
-          </p>
-
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
-            <div className="rounded-3xl border border-fuchsia-300/20 bg-fuchsia-300/[0.05] p-6">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-fuchsia-300/20">
-                <svg className="h-6 w-6 text-fuchsia-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-black text-white">Identify repeated workflow bottlenecks</h3>
-              <p className="mt-3 text-sm leading-6 text-slate-300">Map your recurring processes and find where delays happen most.</p>
-            </div>
-            <div className="rounded-3xl border border-fuchsia-300/20 bg-fuchsia-300/[0.05] p-6">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-fuchsia-300/20">
-                <svg className="h-6 w-6 text-fuchsia-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-black text-white">Estimate time and cost lost each month</h3>
-              <p className="mt-3 text-sm leading-6 text-slate-300">Get concrete numbers on how much inefficiency is costing your business.</p>
-            </div>
-            <div className="rounded-3xl border border-fuchsia-300/20 bg-fuchsia-300/[0.05] p-6">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-fuchsia-300/20">
-                <svg className="h-6 w-6 text-fuchsia-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-black text-white">Recommend the right Syntra AI workers</h3>
-              <p className="mt-3 text-sm leading-6 text-slate-300">See which AI workers best fit your specific workflow needs.</p>
-            </div>
-          </div>
-
-          <div className="mt-10">
-            <a
-              href="https://syntra-core.vercel.app/workflow-assessment"
-              className="inline-block rounded-full bg-fuchsia-300 px-7 py-3 text-center text-sm font-black text-slate-950 shadow-lg shadow-fuchsia-500/20 transition hover:bg-fuchsia-200"
-            >
-              Start AI Workflow Analysis
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <section id="how-it-works" className="px-6 py-20">
-        <div className="mx-auto max-w-7xl">
-          <p className="text-sm font-bold uppercase tracking-[0.25em] text-cyan-300">
-            The problem
-          </p>
-          <h2 className="mt-4 max-w-4xl text-4xl font-black tracking-tight md:text-5xl">
-            Businesses are drowning in missed requests, scattered tools, and
-            manual coordination.
-          </h2>
-
-          <div className="mt-12 grid gap-6 md:grid-cols-4">
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
             {[
-              ["Buried emails", "Important requests get lost in busy inboxes."],
-              ["Meeting chaos", "Follow-ups and prep work fall through cracks."],
-              ["Manual searching", "Teams waste time looking for what matters."],
-              [
-                "Tool overload",
-                "AI answers questions but rarely operates like a worker.",
-              ],
-            ].map(([title, body]) => (
+              {
+                title: 'Law Offices',
+                description: 'Stay on top of client communication and deadlines.',
+              },
+              {
+                title: 'Trucking Companies',
+                description: 'Keep dispatch, deliveries, and follow-ups organized.',
+              },
+              {
+                title: 'Local Businesses',
+                description: 'Streamline daily operations and customer requests.',
+              },
+              {
+                title: 'E‑commerce Brands',
+                description: 'Manage orders, shipments, and customer support.',
+              },
+              {
+                title: 'Professional Services',
+                description: 'Never miss an appointment or invoice again.',
+              },
+            ].map(({ title, description }) => (
               <div
                 key={title}
-                className="rounded-3xl border border-white/10 bg-white/[0.04] p-6"
+                className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100"
               >
-                <h3 className="text-xl font-black text-white">{title}</h3>
-                <p className="mt-3 text-sm leading-6 text-slate-300">{body}</p>
+                <h3 className="text-lg font-bold text-gray-900">{title}</h3>
+                <p className="mt-2 text-sm text-gray-600">{description}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
-
-      <section className="px-6 py-20">
-        <div className="mx-auto max-w-7xl rounded-[2rem] border border-cyan-300/20 bg-cyan-300/[0.05] p-8 md:p-12">
-          <p className="text-sm font-bold uppercase tracking-[0.25em] text-cyan-300">
-            First worker
-          </p>
-          <h2 className="mt-4 text-4xl font-black tracking-tight md:text-5xl">
-            Syntra starts with an AI Executive Assistant.
-          </h2>
-
-          <div className="mt-10 grid gap-5 md:grid-cols-3">
-            {[
-              "Reads Gmail, Calendar, and Tasks",
-              "Creates your daily briefing",
-              "Surfaces urgent requests",
-              "Detects meeting conflicts",
-              "Recommends next actions",
-              "Routes work through approval",
-            ].map((item) => (
-              <div
-                key={item}
-                className="rounded-2xl border border-white/10 bg-[#0b1024] p-5 text-slate-100"
-              >
-                {item}
-              </div>
-            ))}
+      {/* Problem & solution cards */}
+      <section id="product" className="bg-gray-50 py-20">
+        <div className="mx-auto max-w-7xl grid gap-10 px-6 md:grid-cols-2">
+          {/* Problem card */}
+          <div className="rounded-3xl bg-white p-8 shadow-md ring-1 ring-gray-100">
+            <span className="text-sm font-semibold uppercase text-purple-600">The problem we solve</span>
+            <h3 className="mt-4 text-2xl font-bold text-gray-900">Small businesses drown in busy work.</h3>
+            <ul className="mt-6 space-y-3 text-gray-700">
+              <li className="flex items-start gap-3">
+                <svg className="h-5 w-5 flex-shrink-0 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span>Email overload and lost requests</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <svg className="h-5 w-5 flex-shrink-0 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span>Scheduling conflicts and missed prep</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <svg className="h-5 w-5 flex-shrink-0 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span>Important tasks fall through the cracks</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <svg className="h-5 w-5 flex-shrink-0 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span>Too many disconnected tools</span>
+              </li>
+            </ul>
           </div>
-        </div>
-      </section>
-
-      <section className="px-6 py-20">
-        <div className="mx-auto max-w-7xl">
-          <p className="text-sm font-bold uppercase tracking-[0.25em] text-fuchsia-300">
-            Platform vision
-          </p>
-          <h2 className="mt-4 text-4xl font-black tracking-tight md:text-5xl">
-            One assistant today. An AI workforce tomorrow.
-          </h2>
-
-          <div className="mt-12 grid gap-6 md:grid-cols-4">
-            {[
-              ["Executive Assistant", "Active / Early Access"],
-              ["Dev Agent", "Coming Soon"],
-              ["IT Operations Agent", "Coming Soon"],
-              ["Security Analyst", "Coming Soon"],
-            ].map(([worker, status]) => (
-              <div
-                key={worker}
-                className="rounded-3xl border border-white/10 bg-white/[0.04] p-6"
-              >
-                <h3 className="text-xl font-black text-white">{worker}</h3>
-                <p className="mt-3 text-sm font-semibold text-cyan-200">
-                  {status}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="early-access" className="px-6 py-20">
-        <div className="mx-auto grid max-w-7xl gap-10 rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 md:grid-cols-2 md:p-12">
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.25em] text-cyan-300">
-              Early access
-            </p>
-            <h2 className="mt-4 text-4xl font-black tracking-tight">
-              Help shape the future of AI work.
-            </h2>
-            <p className="mt-5 text-slate-300">
-              We’re looking for early users who want fewer missed requests,
-              better prioritization, and safer AI-assisted execution.
+          {/* Executive assistant card */}
+          <div className="rounded-3xl bg-white p-8 shadow-md ring-1 ring-gray-100">
+            <span className="text-sm font-semibold uppercase text-blue-600">Executive Assistant</span>
+            <h3 className="mt-4 text-2xl font-bold text-gray-900">Your first AI worker.</h3>
+            <ul className="mt-6 space-y-3 text-gray-700">
+              <li className="flex items-start gap-3">
+                <svg className="h-5 w-5 flex-shrink-0 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span>Detects operational work across email, calendar, and tasks</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <svg className="h-5 w-5 flex-shrink-0 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span>Recommends next actions and prepares drafts</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <svg className="h-5 w-5 flex-shrink-0 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span>Routes everything through human approval</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <svg className="h-5 w-5 flex-shrink-0 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span>Tracks what happened and builds context</span>
+              </li>
+            </ul>
+            <p className="mt-8 rounded-lg bg-blue-50 p-3 text-sm font-medium text-blue-700">
+              Human approval. You stay in control.
             </p>
           </div>
-
-          <form
-            action="https://formspree.io/f/xbdwzgao"
-            method="POST"
-            className="space-y-4"
-          >
-            <input
-              name="name"
-              placeholder="Name"
-              required
-              className="w-full rounded-2xl border border-white/10 bg-[#0b1024] px-5 py-4 text-white outline-none placeholder:text-slate-500 focus:border-cyan-300"
-            />
-            <input
-              name="email"
-              type="email"
-              placeholder="Email"
-              required
-              className="w-full rounded-2xl border border-white/10 bg-[#0b1024] px-5 py-4 text-white outline-none placeholder:text-slate-500 focus:border-cyan-300"
-            />
-            <input
-              name="company"
-              placeholder="Company"
-              className="w-full rounded-2xl border border-white/10 bg-[#0b1024] px-5 py-4 text-white outline-none placeholder:text-slate-500 focus:border-cyan-300"
-            />
-            <textarea
-              name="workflow_problem"
-              placeholder="Biggest workflow problem"
-              rows={4}
-              className="w-full rounded-2xl border border-white/10 bg-[#0b1024] px-5 py-4 text-white outline-none placeholder:text-slate-500 focus:border-cyan-300"
-            />
-            <button
-              type="submit"
-              className="w-full rounded-full bg-cyan-300 px-7 py-4 text-sm font-black text-slate-950 transition hover:bg-cyan-200"
+        </div>
+      </section>
+      {/* Use cases expanded section */}
+      <section className="py-20">
+        <div className="mx-auto max-w-7xl px-6">
+          <p className="text-sm font-bold uppercase tracking-[0.25em] text-purple-600">Pilot-ready use cases</p>
+          <h2 className="mt-4 max-w-xl text-3xl font-extrabold tracking-tight md:text-4xl">
+            See where Syntra starts today.
+          </h2>
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+            {[
+              {
+                title: 'Law Office',
+                body: 'Pilot focus on client intake, follow-ups, and deadline reminders.',
+              },
+              {
+                title: 'Trucking Company',
+                body: 'Manage dispatching, shipment updates, and driver communications.',
+              },
+              {
+                title: 'Cupcake Business',
+                body: 'Coordinate orders, deliveries, and customer feedback.',
+              },
+              {
+                title: 'Dog Boutique',
+                body: 'Handle appointments, grooming schedules, and pet-owner messaging.',
+              },
+              {
+                title: 'Syntra Internal',
+                body: 'Eat our own dogfood: refine our processes with Syntra.',
+              },
+            ].map(({ title, body }) => (
+              <div
+                key={title}
+                className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100"
+              >
+                <h3 className="text-lg font-bold text-gray-900">{title}</h3>
+                <p className="mt-3 text-sm text-gray-600">{body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      {/* Demo and founder videos section */}
+      <section id="demo" className="bg-gray-50 py-20">
+        <div className="mx-auto max-w-7xl px-6">
+          <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 md:text-4xl">
+            See how it works
+          </h2>
+          <div className="mt-10 grid gap-8 md:grid-cols-2">
+            {/* Product demo video */}
+            <div className="rounded-3xl bg-white p-6 shadow-md ring-1 ring-gray-100">
+              <div className="relative w-full pb-[56.25%]">
+                <iframe
+                  className="absolute inset-0 h-full w-full rounded-xl"
+                  src="https://drive.google.com/file/d/1hXwIl_o02xvRlGqSnUpUNscXzXQJoxTE/preview"
+                  allow="autoplay; fullscreen"
+                />
+              </div>
+              <h3 className="mt-4 text-xl font-bold text-gray-900">Product Demo</h3>
+              <p className="mt-2 text-sm text-gray-600">
+                Watch how Syntra’s AI Executive Assistant organizes your day.
+              </p>
+            </div>
+            {/* Founder video */}
+            <div className="rounded-3xl bg-white p-6 shadow-md ring-1 ring-gray-100">
+              <div className="relative w-full pb-[56.25%]">
+                <iframe
+                  className="absolute inset-0 h-full w-full rounded-xl"
+                  src="https://drive.google.com/file/d/1CZCM4TDzUwHYizQDrnsOcjWBcJOlcrf7/preview"
+                  allow="autoplay; fullscreen"
+                />
+              </div>
+              <h3 className="mt-4 text-xl font-bold text-gray-900">The story behind Syntra</h3>
+              <p className="mt-2 text-sm text-gray-600">
+                Hear from Ryan Sanders, Syntra’s founder.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* Final call-to-action section */}
+      <section id="early-access" className="py-20">
+        <div className="mx-auto max-w-7xl rounded-3xl bg-purple-50 px-6 py-12 md:px-12">
+          <div className="grid gap-8 md:grid-cols-2 md:items-center">
+            <div>
+              <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 md:text-4xl">
+                Join our pilot program
+              </h2>
+              <p className="mt-4 text-gray-700">
+                Help shape the future of AI for small businesses. Sign up for pilot access and be among the first to put Syntra to work for you.
+              </p>
+            </div>
+            <form
+              action="https://formspree.io/f/xbdwzgao"
+              method="POST"
+              className="space-y-4"
             >
-              Request Early Access
-            </button>
-          </form>
+              <div className="flex flex-col gap-4 md:flex-row">
+                <input
+                  name="name"
+                  placeholder="Name"
+                  required
+                  className="flex-1 rounded-lg border border-gray-300 bg-white px-5 py-4 text-gray-800 placeholder-gray-500 shadow-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                />
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="Email"
+                  required
+                  className="flex-1 rounded-lg border border-gray-300 bg-white px-5 py-4 text-gray-800 placeholder-gray-500 shadow-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                />
+              </div>
+              <input
+                name="company"
+                placeholder="Company (optional)"
+                className="w-full rounded-lg border border-gray-300 bg-white px-5 py-4 text-gray-800 placeholder-gray-500 shadow-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+              />
+              <textarea
+                name="workflow_problem"
+                placeholder="Describe your biggest workflow problem (optional)"
+                rows={3}
+                className="w-full rounded-lg border border-gray-300 bg-white px-5 py-4 text-gray-800 placeholder-gray-500 shadow-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+              />
+              <button
+                type="submit"
+                className="w-full rounded-full bg-purple-600 px-7 py-4 text-sm font-bold text-white shadow-md transition hover:bg-purple-500 md:w-auto"
+              >
+                Request Pilot Access
+              </button>
+            </form>
+          </div>
         </div>
       </section>
-
-      <footer className="border-t border-white/10 px-6 py-8">
-        <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 text-sm text-slate-400 md:flex-row">
-          <p>© 2026 Syntra Suite. All rights reserved.</p>
-          <p>AI workforce infrastructure for modern teams.</p>
+      {/* Footer */}
+      <footer className="border-t border-gray-200 px-6 py-8">
+        <div className="mx-auto flex max-w-7xl flex-col gap-6 text-sm text-gray-500 md:flex-row md:items-center md:justify-between">
+          <div className="flex items-center gap-2">
+            <span>© 2026 Syntra Suite.</span>
+            <span>All rights reserved.</span>
+          </div>
+          <div className="flex flex-wrap gap-4">
+            <a href="#product" className="hover:text-gray-900">Product</a>
+            <a href="#use-cases" className="hover:text-gray-900">Use Cases</a>
+            <a href="#demo" className="hover:text-gray-900">Demo</a>
+            <a href="#founder" className="hover:text-gray-900">Founder</a>
+            <a href="/privacy" className="hover:text-gray-900">Privacy</a>
+            <a href="/terms" className="hover:text-gray-900">Terms</a>
+          </div>
         </div>
       </footer>
     </main>
