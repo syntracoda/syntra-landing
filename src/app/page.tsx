@@ -1,362 +1,1099 @@
-import Image from 'next/image';
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useMemo, useRef, useState } from "react";
+
+type MenuItem = {
+  title: string;
+  description: string;
+  href: string;
+};
+
+type MenuKey = "product" | "workers" | "useCases" | "resources";
+
+const workflowAssessmentHref =
+  "https://syntra-core.vercel.app/workflow-assessment";
+
+const navMenus: Record<MenuKey, { label: string; items: MenuItem[] }> = {
+  product: {
+    label: "Product",
+    items: [
+      {
+        title: "Executive Assistant",
+        description: "Email, calendar, follow-ups, and daily briefing",
+        href: "#executive-assistant",
+      },
+      {
+        title: "Workspaces",
+        description: "Organize each business or client operation",
+        href: "#workspaces",
+      },
+      {
+        title: "Work Queue",
+        description: "Prioritized work waiting for review",
+        href: "#work-queue",
+      },
+      {
+        title: "Approvals",
+        description: "Human approval before action",
+        href: "#approvals",
+      },
+      {
+        title: "AI Workflow Analysis",
+        description: "Find what Syntra can automate first",
+        href: workflowAssessmentHref,
+      },
+    ],
+  },
+  workers: {
+    label: "AI Workers",
+    items: [
+      {
+        title: "Executive Assistant",
+        description: "Your first AI worker",
+        href: "#executive-assistant",
+      },
+      {
+        title: "Project Management Agent",
+        description: "Track deadlines, updates, and project work",
+        href: "#future-workers",
+      },
+      {
+        title: "Constituent Issues Agent",
+        description: "Triage and organize public requests",
+        href: "#future-workers",
+      },
+      {
+        title: "Legislative Watch Agent",
+        description: "Monitor bills, amendments, and updates",
+        href: "#future-workers",
+      },
+      {
+        title: "QA / Operations Agent",
+        description: "Review workflows and surface issues",
+        href: "#future-workers",
+      },
+    ],
+  },
+  useCases: {
+    label: "Use Cases",
+    items: [
+      {
+        title: "Law Offices",
+        description: "Intake, follow-ups, deadlines, and client communication",
+        href: "#law-offices",
+      },
+      {
+        title: "Trucking Companies",
+        description: "Dispatch, shipment updates, and driver communication",
+        href: "#trucking-companies",
+      },
+      {
+        title: "Local Service Businesses",
+        description: "Scheduling, quotes, follow-ups, and admin work",
+        href: "#local-businesses",
+      },
+      {
+        title: "E-commerce Brands",
+        description: "Orders, customer requests, and operations support",
+        href: "#ecommerce-brands",
+      },
+      {
+        title: "Professional Services",
+        description: "Appointments, inboxes, proposals, and client work",
+        href: "#professional-services",
+      },
+      {
+        title: "Government / Legislative Offices",
+        description: "Constituent issues, calendars, and legislative tracking",
+        href: "#government-offices",
+      },
+    ],
+  },
+  resources: {
+    label: "Resources",
+    items: [
+      {
+        title: "How It Works",
+        description: "See the approval workflow",
+        href: "#how-it-works",
+      },
+      {
+        title: "Founder Demo",
+        description: "Watch the founder walkthrough",
+        href: "/founder-intro",
+      },
+      {
+        title: "AI Workflow Analysis",
+        description: "Try the guided workflow tool",
+        href: workflowAssessmentHref,
+      },
+      {
+        title: "Access Request",
+        description: "Request pilot access",
+        href: "#early-access",
+      },
+      {
+        title: "Product Roadmap",
+        description: "See where Syntra is headed",
+        href: "#future-workers",
+      },
+    ],
+  },
+};
+
+const heroBullets = [
+  "Specialized AI workers for inboxes, calendars, tasks, follow-ups, and approvals.",
+  "Built first for small businesses and service teams that run on client requests and operational follow-through.",
+  "Human-approved execution with workspaces, memory, activity history, and queues built in.",
+];
+
+const problemCards = [
+  {
+    title: "Email overload and missed requests",
+    body: "Important work disappears into crowded inboxes, scattered replies, and informal follow-ups that never become a shared system.",
+  },
+  {
+    title: "Scheduling conflicts and follow-up drag",
+    body: "Reschedules, prep notes, client replies, and meeting changes consume hours that small teams rarely have to spare.",
+  },
+  {
+    title: "Tasks hidden across disconnected tools",
+    body: "Projects, inboxes, calendars, and client notes live in separate places, so teams see fragments instead of one clear work queue.",
+  },
+  {
+    title: "Operational work that never makes it into a system",
+    body: "Too much work stays reactive and manual until something important slips through the cracks.",
+  },
+];
+
+const solutionCards = [
+  {
+    title: "Not another chatbot",
+    body: "Syntra is built to organize, recommend, and move work forward, not just answer prompts in a chat window.",
+  },
+  {
+    title: "Not a staffing company",
+    body: "This is software: AI workers, workspaces, queues, approvals, memory, activity history, and execution.",
+  },
+  {
+    title: "Workspace-based operations",
+    body: "Each business gets a workspace for context, approvals, activity, and the operational memory that future actions depend on.",
+  },
+  {
+    title: "Human-approved execution",
+    body: "Syntra prepares the work, explains the recommendation, and waits for approval before important actions are taken.",
+  },
+  {
+    title: "Work queue built in",
+    body: "Operational requests land in organized queues so the team can see what is urgent, what is ready, and what needs review.",
+  },
+  {
+    title: "Memory and activity history",
+    body: "The system keeps track of what happened and what is still open, so work improves over time instead of resetting every day.",
+  },
+];
+
+const modules = [
+  {
+    id: "executive-assistant",
+    title: "Executive Assistant",
+    what: "Daily briefings, inbox triage, scheduling conflicts, and follow-ups",
+    body: "The first active AI worker reviews the day, prepares next actions, and routes work through approval.",
+  },
+  {
+    id: "workspaces",
+    title: "Workspaces",
+    what: "Organized operating context for each business or client environment",
+    body: "Workspaces keep queues, approvals, activity history, and client context together instead of scattered across tools.",
+  },
+  {
+    id: "work-queue",
+    title: "Work Queue",
+    what: "Prioritized work waiting for review or execution",
+    body: "Syntra turns operational signals into a queue the team can act on instead of leaving work buried across apps.",
+  },
+  {
+    id: "approvals",
+    title: "Approvals",
+    what: "Human approval before important action",
+    body: "The approval layer is a core product feature, helping businesses stay in control before action is executed.",
+  },
+  {
+    id: "workflow-analysis",
+    title: "AI Workflow Analysis",
+    what: "A practical starting point for discovering where Syntra can help",
+    body: "Use workflow analysis to identify repeated bottlenecks and see where specialized AI workers should begin first.",
+  },
+  {
+    id: "future-workers",
+    title: "Future Specialized Workers",
+    what: "Project, operations, public-sector, and workflow-specific expansion",
+    body: "Syntra begins with the Executive Assistant and expands through more specialized AI workers on the same operating layer.",
+  },
+];
+
+const howItWorks = [
+  {
+    step: "01",
+    title: "Connect work sources",
+    body: "Syntra starts where the business already works: inboxes, calendars, tasks, workflows, and client operations.",
+  },
+  {
+    step: "02",
+    title: "Syntra reviews and prioritizes",
+    body: "The workspace creates a daily briefing, surfaces what needs attention, and organizes work by context and urgency.",
+  },
+  {
+    step: "03",
+    title: "AI workers prepare the work",
+    body: "Specialized AI workers recommend actions, draft replies, flag issues, and prepare what should be reviewed next.",
+  },
+  {
+    step: "04",
+    title: "Human approves",
+    body: "The user reviews, edits, approves, or dismisses important work before action is taken.",
+  },
+  {
+    step: "05",
+    title: "Syntra executes and learns",
+    body: "Once approved, Syntra completes the action and keeps the result in workspace memory and activity history.",
+  },
+];
+
+const useCases = [
+  {
+    id: "law-offices",
+    title: "Law Offices",
+    body: "Organize intake, follow-ups, deadlines, and client communication without letting urgent requests vanish in the inbox.",
+  },
+  {
+    id: "trucking-companies",
+    title: "Trucking Companies",
+    body: "Track dispatch communication, shipment changes, follow-through, and operational updates before delays grow expensive.",
+  },
+  {
+    id: "local-businesses",
+    title: "Local Service Businesses",
+    body: "Handle scheduling, quotes, customer questions, and recurring admin work with a cleaner operational loop.",
+  },
+  {
+    id: "ecommerce-brands",
+    title: "E-commerce Brands",
+    body: "Support orders, customer requests, operational follow-ups, and repeat issues in one reviewable system.",
+  },
+  {
+    id: "professional-services",
+    title: "Professional Services",
+    body: "Stay ahead of appointments, proposals, inbox review, and client-facing operational work that usually slips between tools.",
+  },
+  {
+    id: "government-offices",
+    title: "Government / Legislative Offices",
+    body: "Triage constituent issues, calendars, approvals, and legislative tracking through structured queues and review steps.",
+  },
+];
+
+const pilotCards = [
+  {
+    title: "Early Pilot",
+    body: "A guided starting point for teams that want to test the Executive Assistant on real operational work.",
+  },
+  {
+    title: "Small Business Workspace",
+    body: "A broader workspace setup for teams that need queues, approvals, memory, and a more complete operational loop.",
+  },
+  {
+    title: "Custom Workflow Build",
+    body: "A higher-touch path for organizations that want Syntra tailored to more specialized workflows as the platform expands.",
+  },
+];
+
+function DropdownPanel({
+  items,
+  onSelect,
+}: {
+  items: MenuItem[];
+  onSelect: () => void;
+}) {
+  return (
+    <div className="absolute left-1/2 top-[calc(100%+0.85rem)] z-30 w-[22rem] -translate-x-1/2 rounded-[1.5rem] border border-[var(--line)] bg-white p-3 shadow-[0_24px_80px_rgba(36,51,79,0.12)]">
+      <div className="grid gap-2">
+        {items.map((item) => (
+          <a
+            key={`${item.title}-${item.href}`}
+            href={item.href}
+            onClick={onSelect}
+            className="group rounded-2xl border border-transparent px-4 py-3 transition hover:border-[rgba(37,99,235,0.14)] hover:bg-[linear-gradient(135deg,rgba(124,58,237,0.045),rgba(36,201,255,0.08))] hover:shadow-[0_10px_24px_rgba(37,99,235,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+          >
+            <p className="text-sm font-semibold text-[var(--foreground)] transition group-hover:text-[var(--accent-strong)]">
+              {item.title}
+            </p>
+            <p className="mt-1 text-sm leading-5 text-slate-500 transition group-hover:text-slate-600">
+              {item.description}
+            </p>
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MobileAccordion({
+  label,
+  items,
+  isOpen,
+  onToggle,
+  onSelect,
+}: {
+  label: string;
+  items: MenuItem[];
+  isOpen: boolean;
+  onToggle: () => void;
+  onSelect: () => void;
+}) {
+  return (
+    <div className="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3">
+      <button
+        type="button"
+        onClick={onToggle}
+        className="flex w-full items-center justify-between text-left text-sm font-semibold text-[var(--foreground)]"
+      >
+        <span>{label}</span>
+        <span className="text-xs text-slate-400">{isOpen ? "-" : "+"}</span>
+      </button>
+      {isOpen ? (
+        <div className="mt-3 grid gap-2">
+          {items.map((item) => (
+            <a
+              key={`${label}-${item.title}-mobile`}
+              href={item.href}
+              onClick={onSelect}
+              className="rounded-2xl px-3 py-3 transition hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+            >
+              <p className="text-sm font-semibold text-[var(--foreground)]">
+                {item.title}
+              </p>
+              <p className="mt-1 text-sm leading-5 text-slate-500">
+                {item.description}
+              </p>
+            </a>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+}
 
 export default function Home() {
+  const navRef = useRef<HTMLDivElement | null>(null);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [openMenu, setOpenMenu] = useState<MenuKey | null>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileSection, setMobileSection] = useState<MenuKey | null>(null);
+
+  const menuEntries = useMemo(
+    () => Object.entries(navMenus) as [MenuKey, (typeof navMenus)[MenuKey]][],
+    [],
+  );
+
+  const cancelCloseTimer = () => {
+    if (closeTimerRef.current !== null) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  };
+
+  const scheduleCloseMenu = () => {
+    cancelCloseTimer();
+    closeTimerRef.current = setTimeout(() => {
+      setOpenMenu(null);
+      closeTimerRef.current = null;
+    }, 220);
+  };
+
+  const openMenuNow = (menu: MenuKey) => {
+    cancelCloseTimer();
+    setOpenMenu(menu);
+  };
+
+  const toggleMenu = (menu: MenuKey) => {
+    cancelCloseTimer();
+    setOpenMenu((current) => (current === menu ? null : menu));
+  };
+
+  const closeAllMenus = () => {
+    cancelCloseTimer();
+    setOpenMenu(null);
+    setMobileOpen(false);
+    setMobileSection(null);
+  };
+
+  useEffect(() => {
+    const clearMenus = () => {
+      if (closeTimerRef.current !== null) {
+        clearTimeout(closeTimerRef.current);
+        closeTimerRef.current = null;
+      }
+      setOpenMenu(null);
+      setMobileOpen(false);
+      setMobileSection(null);
+    };
+
+    const onPointerDown = (event: MouseEvent) => {
+      if (!navRef.current?.contains(event.target as Node)) {
+        clearMenus();
+      }
+    };
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        clearMenus();
+      }
+    };
+
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+      if (closeTimerRef.current !== null) {
+        clearTimeout(closeTimerRef.current);
+        closeTimerRef.current = null;
+      }
+    };
+  }, []);
+
   return (
-    <main className="bg-gray-50 text-gray-900 font-sans">
-      {/* Hero with navigation */}
-      <header className="relative overflow-hidden">
-        {/* Top navigation bar */}
-        <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6">
-          {/* Logo and brand name */}
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow">
-              <Image src="/images/syntra-logo.png" alt="Syntra Suite" width={40} height={40} />
-            </div>
-            <span className="text-lg font-bold tracking-tight">Syntra Suite</span>
-          </div>
-          {/* Primary nav links */}
-          <div className="hidden items-center gap-6 text-sm font-semibold text-gray-600 md:flex">
-            <a href="#product" className="hover:text-gray-900">Product</a>
-            <a href="#use-cases" className="hover:text-gray-900">Use Cases</a>
-            <a href="#demo" className="hover:text-gray-900">Demo</a>
-            <a href="#founder" className="hover:text-gray-900">Founder</a>
-            <span className="cursor-default text-gray-400">Pricing (Soon)</span>
-          </div>
-          {/* Call to action button */}
-          <a
-            href="#early-access"
-            className="rounded-full bg-purple-600 px-5 py-2 text-sm font-semibold text-white shadow-md transition hover:bg-purple-500"
-          >
-            Request Pilot Access
-          </a>
-        </nav>
-        {/* Hero content */}
-        <section className="mx-auto max-w-7xl grid items-center gap-12 px-6 pb-24 pt-12 lg:grid-cols-12">
-          {/* Text content */}
-          <div className="lg:col-span-6">
-            <span className="mb-4 inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700 uppercase">
-              AI Workforce OS • Executive Assistant first
-            </span>
-            <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
-              AI workers for the work your business never has time to finish.
-            </h1>
-            <p className="mt-6 max-w-xl text-lg leading-7 text-gray-600">
-              Syntra gives small businesses specialized AI workers for email, scheduling, follow‑ups, workflow triage, and client operations —
-              with human approval before anything important happens.
-            </p>
-            {/* Key benefits list */}
-            <ul className="mt-8 space-y-3 text-gray-700">
-              <li className="flex items-start gap-3">
-                <svg className="h-6 w-6 flex-shrink-0 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                <span className="leading-6">Detects work across your tools</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <svg className="h-6 w-6 flex-shrink-0 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                <span className="leading-6">Prepares drafts you can approve</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <svg className="h-6 w-6 flex-shrink-0 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                <span className="leading-6">Human approval — you stay in control</span>
-              </li>
-            </ul>
-            {/* Hero call to actions */}
-            <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-              <a
-                href="#early-access"
-                className="rounded-full bg-purple-600 px-7 py-3 text-center text-sm font-bold text-white shadow-md transition hover:bg-purple-500"
-              >
-                Request Pilot Access
-              </a>
-              <a
-                href="#demo"
-                className="rounded-full border border-purple-600 px-7 py-3 text-center text-sm font-bold text-purple-600 transition hover:bg-purple-50"
-              >
-                Watch Product Demo
-              </a>
-              <a
-                href="#founder"
-                className="rounded-full border border-gray-300 px-7 py-3 text-center text-sm font-semibold text-gray-700 transition hover:bg-gray-100"
-              >
-                View Founder Intro
-              </a>
-            </div>
-          </div>
-          {/* Product screenshot */}
-          <div className="lg:col-span-6 flex justify-center lg:justify-end">
-            <div className="w-full max-w-md overflow-hidden rounded-xl shadow-xl ring-1 ring-gray-200">
-              <Image
-                src="/images/syntra-app.png"
-                alt="Syntra app screenshot"
-                width={512}
-                height={512}
-                className="w-full h-auto"
-              />
-            </div>
-          </div>
-        </section>
-      </header>
-      {/* Trusted by section */}
-      <section id="use-cases" className="py-12">
-        <div className="mx-auto max-w-7xl px-6">
-          <p className="text-center text-sm font-bold uppercase tracking-[0.25em] text-purple-600">
-            Trusted by small businesses ready to scale
-          </p>
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
-            {[
-              {
-                title: 'Law Offices',
-                description: 'Stay on top of client communication and deadlines.',
-              },
-              {
-                title: 'Trucking Companies',
-                description: 'Keep dispatch, deliveries, and follow-ups organized.',
-              },
-              {
-                title: 'Local Businesses',
-                description: 'Streamline daily operations and customer requests.',
-              },
-              {
-                title: 'E‑commerce Brands',
-                description: 'Manage orders, shipments, and customer support.',
-              },
-              {
-                title: 'Professional Services',
-                description: 'Never miss an appointment or invoice again.',
-              },
-            ].map(({ title, description }) => (
-              <div
-                key={title}
-                className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100"
-              >
-                <h3 className="text-lg font-bold text-gray-900">{title}</h3>
-                <p className="mt-2 text-sm text-gray-600">{description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-      {/* Problem & solution cards */}
-      <section id="product" className="bg-gray-50 py-20">
-        <div className="mx-auto max-w-7xl grid gap-10 px-6 md:grid-cols-2">
-          {/* Problem card */}
-          <div className="rounded-3xl bg-white p-8 shadow-md ring-1 ring-gray-100">
-            <span className="text-sm font-semibold uppercase text-purple-600">The problem we solve</span>
-            <h3 className="mt-4 text-2xl font-bold text-gray-900">Small businesses drown in busy work.</h3>
-            <ul className="mt-6 space-y-3 text-gray-700">
-              <li className="flex items-start gap-3">
-                <svg className="h-5 w-5 flex-shrink-0 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                <span>Email overload and lost requests</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <svg className="h-5 w-5 flex-shrink-0 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                <span>Scheduling conflicts and missed prep</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <svg className="h-5 w-5 flex-shrink-0 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                <span>Important tasks fall through the cracks</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <svg className="h-5 w-5 flex-shrink-0 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                <span>Too many disconnected tools</span>
-              </li>
-            </ul>
-          </div>
-          {/* Executive assistant card */}
-          <div className="rounded-3xl bg-white p-8 shadow-md ring-1 ring-gray-100">
-            <span className="text-sm font-semibold uppercase text-blue-600">Executive Assistant</span>
-            <h3 className="mt-4 text-2xl font-bold text-gray-900">Your first AI worker.</h3>
-            <ul className="mt-6 space-y-3 text-gray-700">
-              <li className="flex items-start gap-3">
-                <svg className="h-5 w-5 flex-shrink-0 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                <span>Detects operational work across email, calendar, and tasks</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <svg className="h-5 w-5 flex-shrink-0 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                <span>Recommends next actions and prepares drafts</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <svg className="h-5 w-5 flex-shrink-0 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                <span>Routes everything through human approval</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <svg className="h-5 w-5 flex-shrink-0 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                <span>Tracks what happened and builds context</span>
-              </li>
-            </ul>
-            <p className="mt-8 rounded-lg bg-blue-50 p-3 text-sm font-medium text-blue-700">
-              Human approval. You stay in control.
-            </p>
-          </div>
-        </div>
-      </section>
-      {/* Use cases expanded section */}
-      <section className="py-20">
-        <div className="mx-auto max-w-7xl px-6">
-          <p className="text-sm font-bold uppercase tracking-[0.25em] text-purple-600">Pilot-ready use cases</p>
-          <h2 className="mt-4 max-w-xl text-3xl font-extrabold tracking-tight md:text-4xl">
-            See where Syntra starts today.
-          </h2>
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-            {[
-              {
-                title: 'Law Office',
-                body: 'Pilot focus on client intake, follow-ups, and deadline reminders.',
-              },
-              {
-                title: 'Trucking Company',
-                body: 'Manage dispatching, shipment updates, and driver communications.',
-              },
-              {
-                title: 'Cupcake Business',
-                body: 'Coordinate orders, deliveries, and customer feedback.',
-              },
-              {
-                title: 'Dog Boutique',
-                body: 'Handle appointments, grooming schedules, and pet-owner messaging.',
-              },
-              {
-                title: 'Syntra Internal',
-                body: 'Eat our own dogfood: refine our processes with Syntra.',
-              },
-            ].map(({ title, body }) => (
-              <div
-                key={title}
-                className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100"
-              >
-                <h3 className="text-lg font-bold text-gray-900">{title}</h3>
-                <p className="mt-3 text-sm text-gray-600">{body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-      {/* Demo and founder videos section */}
-      <section id="demo" className="bg-gray-50 py-20">
-        <div className="mx-auto max-w-7xl px-6">
-          <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 md:text-4xl">
-            See how it works
-          </h2>
-          <div className="mt-10 grid gap-8 md:grid-cols-2">
-            {/* Product demo video */}
-            <div className="rounded-3xl bg-white p-6 shadow-md ring-1 ring-gray-100">
-              <div className="relative w-full pb-[56.25%]">
-                <iframe
-                  className="absolute inset-0 h-full w-full rounded-xl"
-                  src="https://drive.google.com/file/d/1hXwIl_o02xvRlGqSnUpUNscXzXQJoxTE/preview"
-                  allow="autoplay; fullscreen"
-                />
-              </div>
-              <h3 className="mt-4 text-xl font-bold text-gray-900">Product Demo</h3>
-              <p className="mt-2 text-sm text-gray-600">
-                Watch how Syntra’s AI Executive Assistant organizes your day.
-              </p>
-            </div>
-            {/* Founder video */}
-            <div className="rounded-3xl bg-white p-6 shadow-md ring-1 ring-gray-100">
-              <div className="relative w-full pb-[56.25%]">
-                <iframe
-                  className="absolute inset-0 h-full w-full rounded-xl"
-                  src="https://drive.google.com/file/d/1CZCM4TDzUwHYizQDrnsOcjWBcJOlcrf7/preview"
-                  allow="autoplay; fullscreen"
-                />
-              </div>
-              <h3 className="mt-4 text-xl font-bold text-gray-900">The story behind Syntra</h3>
-              <p className="mt-2 text-sm text-gray-600">
-                Hear from Ryan Sanders, Syntra’s founder.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-      {/* Final call-to-action section */}
-      <section id="early-access" className="py-20">
-        <div className="mx-auto max-w-7xl rounded-3xl bg-purple-50 px-6 py-12 md:px-12">
-          <div className="grid gap-8 md:grid-cols-2 md:items-center">
-            <div>
-              <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 md:text-4xl">
-                Join our pilot program
-              </h2>
-              <p className="mt-4 text-gray-700">
-                Help shape the future of AI for small businesses. Sign up for pilot access and be among the first to put Syntra to work for you.
-              </p>
-            </div>
-            <form
-              action="https://formspree.io/f/xbdwzgao"
-              method="POST"
-              className="space-y-4"
+    <main className="min-h-screen overflow-hidden bg-[var(--background)] text-[var(--foreground)]">
+      <section className="relative px-6 pb-14 pt-8">
+        <div className="mx-auto max-w-7xl">
+          <header className="relative">
+            <div className="pointer-events-none absolute inset-x-4 top-14 -z-10 h-[28rem] rounded-[3rem] bg-[radial-gradient(circle_at_top_left,rgba(124,58,237,0.09),transparent_40%),radial-gradient(circle_at_top_right,rgba(36,201,255,0.1),transparent_34%),linear-gradient(180deg,rgba(255,255,255,0.84)_0%,rgba(248,250,252,0.18)_72%,rgba(248,250,252,0)_100%)] blur-2xl" />
+            <div
+              ref={navRef}
+              className="rounded-[2rem] border border-[var(--line)] bg-white/80 px-4 py-4 shadow-[0_10px_32px_rgba(36,51,79,0.04)]"
             >
-              <div className="flex flex-col gap-4 md:flex-row">
-                <input
-                  name="name"
-                  placeholder="Name"
-                  required
-                  className="flex-1 rounded-lg border border-gray-300 bg-white px-5 py-4 text-gray-800 placeholder-gray-500 shadow-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
-                />
-                <input
-                  name="email"
-                  type="email"
-                  placeholder="Email"
-                  required
-                  className="flex-1 rounded-lg border border-gray-300 bg-white px-5 py-4 text-gray-800 placeholder-gray-500 shadow-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
-                />
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface)] shadow-sm">
+                    <Image
+                      src="/images/syntra-logo.png"
+                      alt="Syntra"
+                      width={48}
+                      height={48}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <p className="text-lg font-semibold tracking-[0.04em] text-[var(--navy-soft)]">
+                      Syntra
+                    </p>
+                    <p className="text-sm text-slate-500">
+                      AI Workforce OS for business operations
+                    </p>
+                  </div>
+                </div>
+
+                <nav className="hidden items-center gap-1 xl:flex">
+                  {menuEntries.slice(0, 3).map(([key, menu]) => (
+                    <div
+                      key={key}
+                      className="relative -mb-4 pb-4"
+                      onMouseEnter={() => openMenuNow(key)}
+                      onMouseLeave={scheduleCloseMenu}
+                    >
+                      <button
+                        type="button"
+                        onClick={() => toggleMenu(key)}
+                        onFocus={() => openMenuNow(key)}
+                        aria-expanded={openMenu === key}
+                        className="flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold text-slate-600 transition hover:bg-white hover:text-[var(--accent-strong)]"
+                      >
+                        <span>{menu.label}</span>
+                        <span className="text-xs text-slate-400">
+                          {openMenu === key ? "-" : "v"}
+                        </span>
+                      </button>
+                      {openMenu === key ? (
+                        <>
+                          <div
+                            aria-hidden="true"
+                            className="absolute left-1/2 top-full h-4 w-[22rem] -translate-x-1/2"
+                          />
+                          <DropdownPanel
+                            items={menu.items}
+                            onSelect={closeAllMenus}
+                          />
+                        </>
+                      ) : null}
+                    </div>
+                  ))}
+
+                  <a
+                    href="#how-it-works"
+                    className="rounded-full px-3 py-2 text-sm font-semibold text-slate-600 transition hover:bg-white hover:text-[var(--accent-strong)]"
+                  >
+                    How It Works
+                  </a>
+                  <a
+                    href="#pricing-soon"
+                    className="rounded-full px-3 py-2 text-sm font-semibold text-slate-600 transition hover:bg-white hover:text-[var(--accent-strong)]"
+                  >
+                    Pricing Soon
+                  </a>
+
+                  <div
+                    className="relative -mb-4 pb-4"
+                    onMouseEnter={() => openMenuNow("resources")}
+                    onMouseLeave={scheduleCloseMenu}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => toggleMenu("resources")}
+                      onFocus={() => openMenuNow("resources")}
+                      aria-expanded={openMenu === "resources"}
+                      className="flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold text-slate-600 transition hover:bg-white hover:text-[var(--accent-strong)]"
+                    >
+                      <span>Resources</span>
+                      <span className="text-xs text-slate-400">
+                        {openMenu === "resources" ? "-" : "v"}
+                      </span>
+                    </button>
+                    {openMenu === "resources" ? (
+                      <>
+                        <div
+                          aria-hidden="true"
+                          className="absolute left-1/2 top-full h-4 w-[22rem] -translate-x-1/2"
+                        />
+                        <DropdownPanel
+                          items={navMenus.resources.items}
+                          onSelect={closeAllMenus}
+                        />
+                      </>
+                    ) : null}
+                  </div>
+                </nav>
+
+                <div className="hidden xl:block">
+                  <a
+                    href="#early-access"
+                    className="cta-aura inline-flex items-center justify-center whitespace-nowrap rounded-full bg-[linear-gradient(135deg,#6d4dff_0%,#8f55ff_48%,#2cc9ff_100%)] px-5 py-3 text-sm font-bold text-white shadow-[0_16px_36px_rgba(109,77,255,0.2)] transition hover:shadow-[0_18px_40px_rgba(109,77,255,0.24)]"
+                  >
+                    Request Access
+                  </a>
+                </div>
+
+                <div className="xl:hidden">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMobileOpen((current) => !current);
+                      setOpenMenu(null);
+                    }}
+                    className="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-white px-4 py-2 text-sm font-semibold text-[var(--foreground)] shadow-sm"
+                  >
+                    <span>Menu</span>
+                    <span className="text-xs text-slate-400">
+                      {mobileOpen ? "-" : "v"}
+                    </span>
+                  </button>
+                </div>
               </div>
-              <input
-                name="company"
-                placeholder="Company (optional)"
-                className="w-full rounded-lg border border-gray-300 bg-white px-5 py-4 text-gray-800 placeholder-gray-500 shadow-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
-              />
-              <textarea
-                name="workflow_problem"
-                placeholder="Describe your biggest workflow problem (optional)"
-                rows={3}
-                className="w-full rounded-lg border border-gray-300 bg-white px-5 py-4 text-gray-800 placeholder-gray-500 shadow-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
-              />
-              <button
-                type="submit"
-                className="w-full rounded-full bg-purple-600 px-7 py-4 text-sm font-bold text-white shadow-md transition hover:bg-purple-500 md:w-auto"
+
+              {mobileOpen ? (
+                <div className="mt-4 grid gap-3 xl:hidden">
+                  {menuEntries.map(([key, menu]) => (
+                    <MobileAccordion
+                      key={`mobile-${key}`}
+                      label={menu.label}
+                      items={menu.items}
+                      isOpen={mobileSection === key}
+                      onToggle={() =>
+                        setMobileSection((current) => (current === key ? null : key))
+                      }
+                      onSelect={closeAllMenus}
+                    />
+                  ))}
+                  <a
+                    href="#how-it-works"
+                    onClick={closeAllMenus}
+                    className="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 text-sm font-semibold text-[var(--foreground)]"
+                  >
+                    How It Works
+                  </a>
+                  <a
+                    href="#pricing-soon"
+                    onClick={closeAllMenus}
+                    className="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 text-sm font-semibold text-[var(--foreground)]"
+                  >
+                    Pricing Soon
+                  </a>
+                  <a
+                    href="#early-access"
+                    onClick={closeAllMenus}
+                    className="inline-flex items-center justify-center rounded-full bg-[linear-gradient(135deg,#6d4dff_0%,#8f55ff_48%,#2cc9ff_100%)] px-5 py-3 text-sm font-bold text-white shadow-[0_16px_36px_rgba(109,77,255,0.22)]"
+                  >
+                    Request Access
+                  </a>
+                </div>
+              ) : null}
+            </div>
+
+            <div className="grid items-center gap-10 px-2 pb-2 pt-12 lg:grid-cols-[1.02fr_0.98fr] lg:px-0">
+              <div>
+                <div className="inline-flex rounded-full border border-[rgba(37,99,235,0.14)] bg-[linear-gradient(135deg,rgba(124,58,237,0.07),rgba(36,201,255,0.12))] px-4 py-2 text-sm font-semibold text-[var(--navy-soft)] shadow-[0_10px_24px_rgba(37,99,235,0.08)]">
+                  Human-approved AI workers for small business operations
+                </div>
+
+                <h1 className="mt-6 max-w-3xl text-[2.8rem] font-semibold leading-[0.99] tracking-[-0.04em] text-[var(--foreground)] sm:text-[3.35rem] lg:text-[4.15rem]">
+                  The AI Workforce OS for business operations.
+                </h1>
+
+                <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600">
+                  Syntra gives businesses specialized AI workers that review
+                  email, calendars, tasks, follow-ups, and workflows - then
+                  prepare recommended actions for human approval.
+                </p>
+
+                <p className="mt-5 max-w-2xl text-base leading-7 text-slate-500">
+                  Built first for small businesses and service teams that need a
+                  clearer way to manage operational work.
+                </p>
+
+                <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
+                  <a
+                    href="#early-access"
+                    className="cta-aura rounded-full bg-[linear-gradient(135deg,#6d4dff_0%,#8f55ff_48%,#2cc9ff_100%)] px-7 py-3 text-center text-sm font-bold text-white shadow-[0_16px_36px_rgba(109,77,255,0.2)] transition hover:shadow-[0_18px_42px_rgba(109,77,255,0.24)]"
+                  >
+                    Request Access
+                  </a>
+                  <a
+                    href={workflowAssessmentHref}
+                    className="rounded-full border border-[rgba(37,99,235,0.16)] bg-[linear-gradient(135deg,rgba(124,58,237,0.04),rgba(36,201,255,0.1))] px-7 py-3 text-center text-sm font-bold text-[var(--navy-soft)] transition hover:border-[rgba(37,99,235,0.3)] hover:bg-[linear-gradient(135deg,rgba(124,58,237,0.06),rgba(36,201,255,0.14))]"
+                  >
+                    Try AI Workflow Analysis
+                  </a>
+                  <a
+                    href="#how-it-works"
+                    className="rounded-full border border-[var(--line-strong)] bg-white px-7 py-3 text-center text-sm font-bold text-[var(--foreground)] transition hover:border-[var(--accent)] hover:text-[var(--accent-strong)]"
+                  >
+                    See How It Works
+                  </a>
+                </div>
+
+                <div className="mt-10 grid gap-4 sm:grid-cols-3">
+                  {heroBullets.map((item) => (
+                    <div
+                      key={item}
+                      className="rounded-[1.55rem] border border-[rgba(37,99,235,0.1)] bg-[linear-gradient(180deg,rgba(255,255,255,0.94)_0%,rgba(247,250,255,0.9)_100%)] p-5 shadow-[0_12px_30px_rgba(36,51,79,0.04)] transition hover:border-[rgba(37,99,235,0.2)] hover:shadow-[0_16px_36px_rgba(37,99,235,0.08)]"
+                    >
+                      <p className="text-sm leading-6 text-slate-700">{item}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mx-auto w-full max-w-[39rem] rounded-[2.15rem] border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,#101831_0%,#122040_50%,#182a50_100%)] p-4 text-white shadow-[0_24px_72px_rgba(18,28,44,0.15)]">
+                <div className="rounded-[1.65rem] border border-white/10 bg-[rgba(255,255,255,0.04)] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+                  <div className="flex flex-col gap-4 border-b border-white/10 pb-5 sm:flex-row sm:items-start sm:justify-between">
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/52">
+                        Syntra command center
+                      </p>
+                      <h2 className="mt-2 text-[1.7rem] font-semibold leading-tight">
+                        Workspace - Briefing - Queue - Approval - Action
+                      </h2>
+                    </div>
+                    <div className="rounded-full border border-white/12 bg-white/6 px-3 py-1 text-sm font-semibold text-[rgba(164,122,255,0.98)]">
+                      Product preview
+                    </div>
+                  </div>
+
+                  <div className="mt-5 grid gap-4 lg:grid-cols-[1.08fr_0.92fr]">
+                    <div className="rounded-[1.45rem] border border-white/10 bg-[rgba(255,255,255,0.04)] p-4">
+                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/48">
+                        Today&apos;s AI Briefing
+                      </p>
+                      <div className="mt-4 grid gap-3">
+                        {[
+                          "2 priority emails need response drafts",
+                          "1 calendar conflict is waiting for approval",
+                          "3 follow-ups are ready in the work queue",
+                          "2 actions were completed and logged today",
+                        ].map((item) => (
+                          <div
+                            key={item}
+                            className="rounded-2xl border border-white/8 bg-white/6 px-4 py-3 text-sm text-white/84"
+                          >
+                            {item}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="grid gap-4">
+                      <div className="rounded-[1.45rem] border border-white/10 bg-[rgba(255,255,255,0.04)] p-4">
+                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/48">
+                          Work queue
+                        </p>
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          {[
+                            "Inbox triage",
+                            "Reply draft",
+                            "Calendar review",
+                            "Follow-up prep",
+                          ].map((item) => (
+                            <span
+                              key={item}
+                              className="rounded-full border border-white/10 bg-[rgba(44,201,255,0.12)] px-3 py-2 text-xs font-semibold text-white/86"
+                            >
+                              {item}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="rounded-[1.45rem] border border-white/10 bg-[rgba(255,255,255,0.04)] p-4">
+                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/48">
+                          Pending approvals
+                        </p>
+                        <div className="mt-3 space-y-3">
+                          {[
+                            "Client reply draft needs review",
+                            "Meeting change request waiting for approval",
+                          ].map((item) => (
+                            <div
+                              key={item}
+                              className="rounded-2xl border border-white/8 bg-white/6 px-4 py-3 text-sm text-white/84"
+                            >
+                              {item}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="rounded-[1.45rem] border border-white/10 bg-[rgba(255,255,255,0.04)] p-4">
+                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/48">
+                          Connected apps and history
+                        </p>
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          {["Inbox", "Calendar", "Tasks", "Approvals", "History"].map(
+                            (item) => (
+                              <span
+                                key={item}
+                                className="rounded-full border border-white/10 bg-white/6 px-3 py-2 text-xs font-semibold text-white/74"
+                              >
+                                {item}
+                              </span>
+                            ),
+                          )}
+                        </div>
+                        <p className="mt-4 text-sm leading-6 text-white/66">
+                          A single product surface for operational work, review,
+                          approvals, and activity history.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </header>
+        </div>
+      </section>
+
+      <section className="px-6 py-14">
+        <div className="mx-auto max-w-7xl">
+          <div className="max-w-3xl">
+            <p className="bg-[linear-gradient(135deg,var(--accent)_0%,var(--accent-strong)_55%,var(--accent-cyan)_100%)] bg-clip-text text-sm font-semibold uppercase tracking-[0.22em] text-transparent">
+              The problem
+            </p>
+            <h2 className="mt-4 text-4xl font-semibold leading-tight tracking-[-0.03em] text-[var(--foreground)] md:text-5xl">
+              Small businesses are drowning in email, scheduling, follow-ups,
+              admin work, client requests, and disconnected tools.
+            </h2>
+            <div className="mt-6 h-px w-24 bg-[linear-gradient(90deg,var(--accent),var(--accent-cyan))]" />
+          </div>
+
+          <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+            {problemCards.map((card) => (
+              <article
+                key={card.title}
+                className="rounded-[1.8rem] border border-white/78 bg-[linear-gradient(180deg,rgba(255,255,255,0.94)_0%,rgba(247,250,255,0.92)_100%)] p-6 shadow-[0_14px_40px_rgba(36,51,79,0.04)] transition hover:border-[rgba(37,99,235,0.2)] hover:shadow-[0_18px_42px_rgba(37,99,235,0.08)]"
               >
-                Request Pilot Access
-              </button>
-            </form>
+                <h3 className="text-xl font-semibold text-[var(--foreground)]">
+                  {card.title}
+                </h3>
+                <p className="mt-4 text-sm leading-6 text-slate-600">
+                  {card.body}
+                </p>
+              </article>
+            ))}
           </div>
         </div>
       </section>
-      {/* Footer */}
-      <footer className="border-t border-gray-200 px-6 py-8">
-        <div className="mx-auto flex max-w-7xl flex-col gap-6 text-sm text-gray-500 md:flex-row md:items-center md:justify-between">
-          <div className="flex items-center gap-2">
-            <span>© 2026 Syntra Suite.</span>
-            <span>All rights reserved.</span>
+
+      <section className="px-6 py-14">
+        <div className="mx-auto max-w-7xl">
+          <div className="max-w-3xl">
+            <p className="bg-[linear-gradient(135deg,var(--accent)_0%,var(--accent-strong)_55%,var(--accent-cyan)_100%)] bg-clip-text text-sm font-semibold uppercase tracking-[0.22em] text-transparent">
+              The solution
+            </p>
+            <h2 className="mt-4 text-4xl font-semibold leading-tight tracking-[-0.03em] text-[var(--foreground)] md:text-5xl">
+              Syntra gives each business a platform of specialized AI workers
+              organized around workspaces, queues, approvals, memory, activity
+              history, and execution.
+            </h2>
+            <div className="mt-6 h-px w-24 bg-[linear-gradient(90deg,var(--accent),var(--accent-cyan))]" />
           </div>
-          <div className="flex flex-wrap gap-4">
-            <a href="#product" className="hover:text-gray-900">Product</a>
-            <a href="#use-cases" className="hover:text-gray-900">Use Cases</a>
-            <a href="#demo" className="hover:text-gray-900">Demo</a>
-            <a href="#founder" className="hover:text-gray-900">Founder</a>
-            <a href="/privacy" className="hover:text-gray-900">Privacy</a>
-            <a href="/terms" className="hover:text-gray-900">Terms</a>
+
+          <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {solutionCards.map((card) => (
+              <article
+                key={card.title}
+                className="rounded-[1.8rem] border border-white/78 bg-[linear-gradient(180deg,rgba(255,255,255,0.95)_0%,rgba(246,249,255,0.9)_100%)] p-6 shadow-[0_14px_40px_rgba(36,51,79,0.04)] transition hover:border-[rgba(37,99,235,0.2)] hover:shadow-[0_18px_42px_rgba(37,99,235,0.08)]"
+              >
+                <h3 className="text-xl font-semibold text-[var(--foreground)]">
+                  {card.title}
+                </h3>
+                <p className="mt-4 text-sm leading-6 text-slate-600">
+                  {card.body}
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="modules" className="px-6 py-14">
+        <div className="mx-auto max-w-7xl">
+          <div className="max-w-3xl">
+            <p className="bg-[linear-gradient(135deg,var(--accent)_0%,var(--accent-strong)_55%,var(--accent-cyan)_100%)] bg-clip-text text-sm font-semibold uppercase tracking-[0.22em] text-transparent">
+              Product modules
+            </p>
+            <h2 className="mt-4 text-4xl font-semibold leading-tight tracking-[-0.03em] text-[var(--foreground)] md:text-5xl">
+              Syntra is a platform, not a single AI feature.
+            </h2>
+            <div className="mt-6 h-px w-24 bg-[linear-gradient(90deg,var(--accent),var(--accent-cyan))]" />
+          </div>
+
+          <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {modules.map((module) => (
+              <article
+                key={module.id}
+                id={module.id}
+                className="rounded-[1.85rem] border border-[rgba(37,99,235,0.12)] bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(244,248,255,0.92)_100%)] p-6 shadow-[0_14px_40px_rgba(36,51,79,0.04)] transition hover:border-[rgba(37,99,235,0.24)] hover:shadow-[0_18px_44px_rgba(37,99,235,0.08)]"
+              >
+                <p className="bg-[linear-gradient(135deg,var(--accent)_0%,var(--accent-strong)_52%,var(--accent-cyan)_100%)] bg-clip-text text-sm font-semibold uppercase tracking-[0.18em] text-transparent">
+                  Product module
+                </p>
+                <h3 className="mt-3 text-2xl font-semibold text-[var(--foreground)]">
+                  {module.title}
+                </h3>
+                <p className="mt-4 text-sm font-semibold text-[var(--accent-strong)]">
+                  {module.what}
+                </p>
+                <p className="mt-4 text-sm leading-6 text-slate-600">
+                  {module.body}
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="how-it-works" className="px-6 py-12">
+        <div className="mx-auto max-w-7xl rounded-[2.55rem] border border-[rgba(102,131,191,0.22)] bg-[linear-gradient(180deg,#10192f_0%,#152447_58%,#1b2d58_100%)] px-8 py-10 text-white shadow-[0_30px_90px_rgba(18,28,44,0.18)] md:px-10">
+          <div className="max-w-3xl">
+            <p className="bg-[linear-gradient(135deg,#b991ff_0%,#7db3ff_55%,#79e4ff_100%)] bg-clip-text text-sm font-semibold uppercase tracking-[0.22em] text-transparent">
+              How it works
+            </p>
+            <h2 className="mt-4 text-4xl font-semibold leading-tight tracking-[-0.03em] md:text-5xl">
+              Syntra reviews the work, prepares the action, waits for approval,
+              and keeps the operational history attached to the workspace.
+            </h2>
+          </div>
+
+          <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+            {howItWorks.map((item) => (
+              <article
+                key={item.step}
+                className="rounded-[1.8rem] border border-[rgba(118,149,212,0.18)] bg-[linear-gradient(180deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0.04)_100%)] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]"
+              >
+                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[rgba(121,228,255,0.9)]">
+                  {item.step}
+                </p>
+                <h3 className="mt-3 text-xl font-semibold text-white">
+                  {item.title}
+                </h3>
+                <p className="mt-4 text-sm leading-6 text-white/72">
+                  {item.body}
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="use-cases" className="px-6 py-14">
+        <div className="mx-auto max-w-7xl">
+          <div className="max-w-3xl">
+            <p className="bg-[linear-gradient(135deg,var(--accent)_0%,var(--accent-strong)_55%,var(--accent-cyan)_100%)] bg-clip-text text-sm font-semibold uppercase tracking-[0.22em] text-transparent">
+              Use cases
+            </p>
+            <h2 className="mt-4 text-4xl font-semibold leading-tight tracking-[-0.03em] text-[var(--foreground)] md:text-5xl">
+              Practical operating environments where the approval workflow
+              matters.
+            </h2>
+            <div className="mt-6 h-px w-24 bg-[linear-gradient(90deg,var(--accent),var(--accent-cyan))]" />
+          </div>
+
+          <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {useCases.map((item) => (
+              <article
+                key={item.id}
+                id={item.id}
+                className="rounded-[1.8rem] border border-white/78 bg-[linear-gradient(180deg,rgba(255,255,255,0.95)_0%,rgba(246,249,255,0.9)_100%)] p-6 shadow-[0_14px_40px_rgba(36,51,79,0.04)] transition hover:border-[rgba(37,99,235,0.2)] hover:shadow-[0_18px_42px_rgba(37,99,235,0.08)]"
+              >
+                <h3 className="text-2xl font-semibold text-[var(--foreground)]">
+                  {item.title}
+                </h3>
+                <p className="mt-4 text-sm leading-6 text-slate-600">
+                  {item.body}
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="pricing-soon" className="px-6 py-14">
+        <div className="mx-auto max-w-7xl">
+          <div className="max-w-3xl">
+            <p className="bg-[linear-gradient(135deg,var(--accent)_0%,var(--accent-strong)_55%,var(--accent-cyan)_100%)] bg-clip-text text-sm font-semibold uppercase tracking-[0.22em] text-transparent">
+              Pilot access and pricing soon
+            </p>
+            <h2 className="mt-4 text-4xl font-semibold leading-tight tracking-[-0.03em] text-[var(--foreground)] md:text-5xl">
+              Syntra is opening through pilots and early workspace deployments.
+            </h2>
+            <p className="mt-5 text-lg leading-8 text-slate-600">
+              We&apos;re keeping pricing honest. The current path is pilot-based
+              and workflow-driven while the product matures.
+            </p>
+            <div className="mt-6 h-px w-24 bg-[linear-gradient(90deg,var(--accent),var(--accent-cyan))]" />
+          </div>
+
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            {pilotCards.map((card) => (
+              <article
+                key={card.title}
+                className="rounded-[1.8rem] border border-white/78 bg-[linear-gradient(180deg,rgba(255,255,255,0.95)_0%,rgba(246,249,255,0.9)_100%)] p-6 shadow-[0_14px_40px_rgba(36,51,79,0.04)] transition hover:border-[rgba(37,99,235,0.2)] hover:shadow-[0_18px_42px_rgba(37,99,235,0.08)]"
+              >
+                <h3 className="text-2xl font-semibold text-[var(--foreground)]">
+                  {card.title}
+                </h3>
+                <p className="mt-4 text-sm leading-6 text-slate-600">
+                  {card.body}
+                </p>
+                <p className="mt-5 text-sm font-semibold text-[var(--accent-strong)]">
+                  Pricing coming soon. Access is currently pilot-based.
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="early-access" className="px-6 pb-14 pt-12">
+        <div className="mx-auto grid max-w-7xl gap-10 rounded-[2.8rem] border border-[rgba(102,131,191,0.22)] bg-[linear-gradient(180deg,#10192f_0%,#16284d_100%)] p-8 text-white shadow-[0_30px_90px_rgba(18,28,44,0.18)] lg:grid-cols-[0.95fr_1.05fr] lg:px-10 lg:py-10">
+          <div>
+            <p className="bg-[linear-gradient(135deg,#b991ff_0%,#7db3ff_55%,#79e4ff_100%)] bg-clip-text text-sm font-semibold uppercase tracking-[0.22em] text-transparent">
+              Final CTA
+            </p>
+            <h2 className="mt-4 text-4xl font-semibold leading-tight tracking-[-0.03em] text-white md:text-5xl">
+              Build your AI workforce before busy work buries your business.
+            </h2>
+            <p className="mt-5 text-lg leading-8 text-white/74">
+              Request access or start with AI Workflow Analysis to see how
+              Syntra can turn operational drag into approved action.
+            </p>
+            <div className="mt-6 h-px w-24 bg-[linear-gradient(90deg,#b991ff,#79e4ff)]" />
+
+            <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
+              <a
+                href="#early-access-form"
+                className="cta-aura inline-flex items-center justify-center rounded-full bg-[linear-gradient(135deg,#6d4dff_0%,#8f55ff_52%,#2cc9ff_100%)] px-7 py-3 text-center text-sm font-bold text-white shadow-[0_16px_36px_rgba(109,77,255,0.2)] transition hover:shadow-[0_18px_42px_rgba(109,77,255,0.24)]"
+              >
+                Request Access
+              </a>
+              <a
+                href={workflowAssessmentHref}
+                className="rounded-full border border-white/16 bg-[rgba(255,255,255,0.08)] px-7 py-3 text-center text-sm font-bold text-white transition hover:border-[rgba(121,228,255,0.35)] hover:bg-[rgba(255,255,255,0.12)]"
+              >
+                Try AI Workflow Analysis
+              </a>
+            </div>
+          </div>
+
+          <form
+            id="early-access-form"
+            action="https://formspree.io/f/xbdwzgao"
+            method="POST"
+            className="grid gap-4 rounded-[2rem] border border-white/12 bg-[rgba(255,255,255,0.96)] p-6 text-[var(--foreground)] shadow-[0_22px_70px_rgba(18,28,44,0.14)] md:p-7"
+          >
+            <input
+              name="name"
+              placeholder="Name"
+              required
+              className="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-5 py-4 outline-none placeholder:text-slate-400 focus:border-[var(--accent)]"
+            />
+            <input
+              name="email"
+              type="email"
+              placeholder="Email"
+              required
+              className="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-5 py-4 outline-none placeholder:text-slate-400 focus:border-[var(--accent)]"
+            />
+            <input
+              name="company"
+              placeholder="Company"
+              className="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-5 py-4 outline-none placeholder:text-slate-400 focus:border-[var(--accent)]"
+            />
+            <textarea
+              name="workflow_problem"
+              placeholder="What workflow is causing the most drag right now?"
+              rows={4}
+              className="rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-5 py-4 outline-none placeholder:text-slate-400 focus:border-[var(--accent)]"
+            />
+            <button
+              type="submit"
+              className="cta-aura inline-flex items-center justify-center rounded-full bg-[linear-gradient(135deg,#6d4dff_0%,#8f55ff_52%,#2cc9ff_100%)] px-7 py-4 text-sm font-bold text-white shadow-[0_16px_36px_rgba(109,77,255,0.2)] transition hover:shadow-[0_18px_42px_rgba(109,77,255,0.24)]"
+            >
+              Request Access
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <footer className="px-6 pb-10">
+        <div className="mx-auto flex max-w-7xl flex-col gap-3 border-t border-[var(--line)] pt-6 text-sm text-slate-500 md:flex-row md:items-center md:justify-between">
+          <p>Copyright 2026 Syntra. AI Workforce OS for business operations.</p>
+          <div className="flex flex-wrap items-center gap-4">
+            <a href="#modules" className="hover:text-[var(--foreground)]">
+              Product
+            </a>
+            <a href="#use-cases" className="hover:text-[var(--foreground)]">
+              Use Cases
+            </a>
+            <Link href="/founder-intro" className="hover:text-[var(--foreground)]">
+              Founder Intro
+            </Link>
+            <Link href="/product-demo" className="hover:text-[var(--foreground)]">
+              Product Demo
+            </Link>
           </div>
         </div>
       </footer>

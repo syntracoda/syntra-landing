@@ -1,16 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f5f1e8;
+  --background: #f8fafc;
   --foreground: #162033;
-  --surface: #fffdf8;
-  --surface-strong: #fff8ec;
-  --surface-muted: #f0e7da;
+  --surface: #ffffff;
+  --surface-strong: #f9fbff;
+  --surface-muted: #f3f7fd;
   --line: rgba(22, 32, 51, 0.1);
   --line-strong: rgba(22, 32, 51, 0.18);
-  --accent: #b67c4b;
-  --accent-strong: #8f5a32;
-  --accent-soft: #f2dfcf;
+  --accent: #7c3aed;
+  --accent-strong: #2563eb;
+  --accent-soft: #e8e0ff;
+  --accent-cyan: #24c9ff;
+  --accent-magenta: #d946ef;
   --navy-soft: #24334f;
   --sage-soft: #dce7dd;
 }
@@ -24,12 +26,14 @@
 
 html {
   background:
-    radial-gradient(circle at top left, rgba(182, 124, 75, 0.16), transparent 32%),
-    radial-gradient(circle at top right, rgba(220, 231, 221, 0.6), transparent 28%),
+    radial-gradient(circle at top left, rgba(124, 58, 237, 0.08), transparent 30%),
+    radial-gradient(circle at top center, rgba(37, 99, 235, 0.06), transparent 26%),
+    radial-gradient(circle at top right, rgba(36, 201, 255, 0.08), transparent 28%),
     var(--background);
 }
 
 body {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 1));
   color: var(--foreground);
   font-family: var(--font-manrope), sans-serif;
 }
@@ -39,7 +43,7 @@ body {
 }
 
 ::selection {
-  background: rgba(182, 124, 75, 0.22);
+  background: rgba(124, 58, 237, 0.18);
 }
 
 a,
@@ -55,14 +59,60 @@ textarea {
 }
 
 .section-shell {
-  background: linear-gradient(180deg, rgba(255, 253, 248, 0.94), rgba(255, 248, 236, 0.86));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(249, 251, 255, 0.92));
 }
 
 .section-shell-strong {
-  background: linear-gradient(180deg, rgba(255, 248, 236, 0.98), rgba(240, 231, 218, 0.88));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 1), rgba(243, 247, 253, 0.94));
 }
 
 .soft-panel {
   background: rgba(255, 255, 255, 0.78);
   backdrop-filter: blur(14px);
+}
+
+.nav-dropdown-menu {
+  display: none;
+}
+
+details[open] > .nav-dropdown-menu {
+  display: block;
+}
+
+.nav-summary {
+  list-style: none;
+}
+
+.nav-summary::-webkit-details-marker {
+  display: none;
+}
+
+.cta-aura {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  isolation: isolate;
+  z-index: 0;
+}
+
+.cta-aura:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 4px rgba(36, 201, 255, 0.16),
+    0 16px 36px rgba(109, 77, 255, 0.22);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a,
+  button,
+  input,
+  textarea {
+    transition:
+      color 160ms ease,
+      border-color 160ms ease,
+      background-color 160ms ease,
+      box-shadow 160ms ease;
+  }
 }
